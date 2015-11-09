@@ -159,7 +159,7 @@ void Sampler_TdMonitor( enum enumSamplerSelect SamplerSelect )
       flowx[0][PP_TSP] = flowx[1][PP_TSP];
       flowx[1][PP_TSP] = flowx[2][PP_TSP];
       flowx[2][PP_TSP] = flowx[3][PP_TSP];
-      flowx[3][PP_TSP] = Calc_flow( fstd, Te, 0.0f, Ba );      
+      flowx[3][PP_TSP] = Calc_flow( fstdx[3][PP_TSP], Te, 0.0f, Ba );
       break;
     case Q_SHI:
       fstdx[0][PP_SHI_C] = fstdx[1][PP_SHI_C];

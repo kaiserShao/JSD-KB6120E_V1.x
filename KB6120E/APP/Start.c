@@ -174,13 +174,13 @@ __task	int32_t	main( void )
 	DisplaySetLight( Configure.DisplayLight );
 	DisplaySetTimeout( Configure.TimeoutLight );
 	Keyboard_Init();	//	配置完背光超时时间后再初始化。
-	
-	ShowEdition();		//	确定型号之后，显示初始化之后
+
+	ShowEdition();		//	版本显示 确定型号之后，显示初始化之后
 	RTC_Init();			  //	为避免启动过程中时钟失败造成的假死现象，放在显示初始化之后
 	SD_Init();				//	SD卡读写初始化，放在开关机存取之前
-	PowerLog_Init();	//	开关机存取，时间初始化之后
+	PowerLog_Init();	//	开关机存取，时间和SD卡初始化之后
 	
-	delay( 1000u );		//  配合下位机初始化
+	delay( 1500u );		//  配合下位机初始化
 	SENSOR_Init();		//	modbus通信初始化
 	
 	delay( 500u );
@@ -192,7 +192,7 @@ __task	int32_t	main( void )
 	
 	SamplerSelect = Q_ALL;	//	初始化当前采样器为不合理的值，进行一次切换，切换到第一个合理的值。
 	SamplerTypeSwitch();
-	delay( 1400u );
+	delay( 100u );
 	for(;;)
 	{
 		menu_Main();	        //	转主菜单
