@@ -175,19 +175,31 @@ __PURE	FP32	Calc_fstd( FP32 pf, FP32 Tr, FP32 Pr, FP32 Ba )
 	  计算 （给定给定点处的）工况流量
 	（标况流量的定义温度根据配置参数确定）
 */
-__PURE	FP32	Calc_flow( FP32 fstd, FP32 Tx, FP32 Px, FP32 Ba )
+__PURE	FP32	Calc_flow( FP32 fstd, FP32 Tx, FP32 Px, FP32 Ba, enum enumSamplerSelect SamplerSelect  )
 {
 	FP32	Pbv = 0.0f;	//	饱和水汽压
-	FP32	Tstd = get_Tstd();
+	FP32	Tstd;
 
 	FP32	flow;
-
+	switch( SamplerSelect )
+	{
+	case Q_TSP:
+	Tstd = Tr0;
+	break;
+	case Q_R24:
+	case Q_SHI:
+	case Q_AIR:
+	default:
+	Tstd = get_Tstd();
+	break;
+	}
 	if ( Ba < 0.001f )
 	{
 		flow = fstd;
 	}
 	else
 	{
+		Pbv = 0.0f;
 		if ( Configure.shouldCalcPbv )
 		{
 			Pbv = Calc_Pbv( Tx );

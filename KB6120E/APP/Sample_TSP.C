@@ -245,7 +245,7 @@ void  _task_Sample_TSP( void )
 
 							FP32	Ba = get_Ba();
 							FP32	Te = get_Te();// PumpSelect );
-							FP32	flow = Calc_flow( fstd, Te, 0.0f, Ba );	//	Calc_flow( fstd, Tr, Pr, Ba );
+							FP32	flow = Calc_flow( fstd, Te, 0.0f, Ba, Q_TSP );	//	Calc_flow( fstd, Tr, Pr, Ba );
 
 							FP32	rTr = get_Tr( PumpSelect );
 							FP32	rPr = get_Pr( PumpSelect );

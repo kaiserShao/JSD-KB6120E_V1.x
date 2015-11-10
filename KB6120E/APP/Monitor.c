@@ -159,7 +159,7 @@ void Sampler_TdMonitor( enum enumSamplerSelect SamplerSelect )
       flowx[0][PP_TSP] = flowx[1][PP_TSP];
       flowx[1][PP_TSP] = flowx[2][PP_TSP];
       flowx[2][PP_TSP] = flowx[3][PP_TSP];
-      flowx[3][PP_TSP] = Calc_flow( fstdx[3][PP_TSP], Te, 0.0f, Ba );
+      flowx[3][PP_TSP] = Calc_flow( fstdx[3][PP_TSP], Te, 0.0f, Ba, SamplerSelect );
       break;
     case Q_SHI:
       fstdx[0][PP_SHI_C] = fstdx[1][PP_SHI_C];
@@ -184,8 +184,6 @@ void Sampler_TdMonitor( enum enumSamplerSelect SamplerSelect )
     default:  
       break;
   }
-    
-    
  
 }
 /********************************** 功能说明 ***********************************
@@ -249,8 +247,10 @@ static	void	ShowPumpRunFlow( enum enumPumpSelect PumpSelect )
 		{
 		case PP_TSP: // TSP_KB120F
 			{
+				FP32	Te   = get_Te();
+				FP32	Ba   = get_Ba();
 			  fstd = ( fstdx[0][PumpSelect] + fstdx[1][PumpSelect] + fstdx[2][PumpSelect] + fstdx[3][PumpSelect] ) / 4; 
-				flow = ( flowx[0][PumpSelect] + flowx[1][PumpSelect] + flowx[2][PumpSelect] + flowx[3][PumpSelect] ) / 4; 
+				flow =  Calc_flow( fstd, Te, 0.0f, Ba, Q_TSP );
 			}	
 			Lputs ( 0x0200u, "工况:" ); 	ShowFP32    ( 0x0205u, flow, 0x0701u, "L/m" );
 			Lputs ( 0x0400u, "标况:" );		ShowFP32    ( 0x0405u, fstd, 0x0701u, "L/m" );
@@ -296,11 +296,11 @@ static	void	ShowSumCubage( enum enumPumpSelect PumpSelect )
 	case PP_SHI_C:
 	case PP_SHI_D:
 		Lputs ( 0x0300u, "标 况:" );		ShowFP32 ( 0x0306u, p->vnd,  0x0802u, "L" );
-		Lputs ( 0x0600u, "采样时间:" );		ShowTIME ( 0x060Bu, p->sum_time );
+		Lputs ( 0x0600u, "采样时间:" );	ShowTIME ( 0x060Bu, p->sum_time );
 		break;
 	case PP_AIR:
 		{
-		Lputs ( 0x0200u, "累积时间:" );			ShowTIME ( 0x020Bu, p->sum_time );
+		Lputs ( 0x0200u, "累积时间:" );	ShowTIME ( 0x020Bu, p->sum_time );
 		Lputs ( 0x0400u, "体 积Ⅰ:" );		ShowFP32 ( 0x0408u, (uint32_t)( p->sum_time * Configure.AIRSetFlow[Q_PP1] ) * 0.1f ,  0x0602u, "L" );
 		Lputs ( 0x0600u, "体 积Ⅱ:" );		ShowFP32 ( 0x0608u, (uint32_t)( p->sum_time * Configure.AIRSetFlow[Q_PP2] ) * 0.1f ,  0x0602u, "L" );
 		}
@@ -374,9 +374,9 @@ void Samplestate_Select( BOOL state )
 			need_redraw = FALSE;
         }
 		if( state == TRUE )
-			item = Menu_Select( menu2, item + 1u );
+			item = Menu_Select2( menu2, item + 1u, TRUE );
 		else
-			item = Menu_Select( menu, item + 1u );
+			item = Menu_Select2( menu, item + 1u, TRUE );
       switch( item )
       {
       case 1:

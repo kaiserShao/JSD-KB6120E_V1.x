@@ -44,7 +44,7 @@ extern	__PURE	FP32	_CV_Bat_Current( uint16_t AD_Value );
 
 extern	__PURE	FP32	Calc_fstd( FP32 pf, FP32 Tr, FP32 Pr, FP32 Ba );
 
-extern	__PURE	FP32	Calc_flow( FP32 fstd, FP32 Tr, FP32 Pr, FP32 Ba );
+extern	__PURE	FP32	Calc_flow( FP32 fstd, FP32 Tr, FP32 Pr, FP32 Ba, enum enumSamplerSelect SamplerSelect );
 
 extern	__PURE	FP32	CorrectMulitPoint( FP32 inValue, uint16_t const SlopeList[], FP32 const PointList[], uint8_t PointCount );
 

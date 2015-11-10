@@ -44,7 +44,7 @@ void	LCD_Volt_Adjust( void )
 	extern	FP32	LCDSetGrayVolt ;
 	FP32	LCDVolt;	
 	static	FP32	Ui	 = 0.0f;
-	static	FP32	Uout = 0.30f;
+	static	FP32	Uout = 0.50f;
 	static	FP32	Ek   = 0.0f;
 	
 	#ifdef LCDisPlusVoltage
@@ -71,12 +71,12 @@ void	LCD_Volt_Adjust( void )
 		#else
 		LCDVolt = - _CV_LCD_Volt( SensorLocal.LCD_Voltage );
 
-	Ek = ( LCDSetGrayVolt - LCDVolt ) * 1.0f;
-	Ui += Ek * 0.010f;
-	Uout = Uout * 0.1f + ( Ek * 0.003f + Ui ) * 0.9f;
+		Ek = ( LCDSetGrayVolt - LCDVolt ) * 1.0f;
+		Ui += Ek * 0.020f;
+		Uout = Uout * 0.1f + ( Ek * 0.025f + Ui ) * 0.9f;
 
-	if ( Uout > 0.20f ){ Uout = 0.20f; }//	最大输出 20 %
-	if ( Uout < 0.02f ){ Uout = 0.02f; }//	最小输出  2 %
+		if ( Uout > 0.20f ){ Uout = 0.20f; }//	最大输出 20 %
+		if ( Uout < 0.02f ){ Uout = 0.02f; }//	最小输出  2 %
 
 		PWM2_SetOutput((uint16_t)( Uout * PWM_Output_Max ));
 	#endif
@@ -293,13 +293,14 @@ __task	void	_task_ModbusRead( void const * p_arg )
 //		}
 	}
 }
-
-void	SENSOR_Init( void )
+void	SENSOR_Local_Init ( void )
 {
 	static	osThreadDef( _task_SensorRead, osPriorityAboveNormal, 1, 0 );
-	static	osThreadDef( _task_ModbusRead, osPriorityAboveNormal, 1, 0 );
-
 	osThreadCreate( osThread( _task_SensorRead ), NULL );	//	传感器读取任务(本地)
+}
+void	SENSOR_Remote_Init( void )
+{	
+	static	osThreadDef( _task_ModbusRead, osPriorityAboveNormal, 1, 0 );
 	osThreadCreate( osThread( _task_ModbusRead ), NULL );	//	传感器读取任务(远程)
 }
 

@@ -29,7 +29,7 @@ CHAR  const * const ExNameIdent2[] =
 
 CHAR  const * const EditionNum[] =
 {
-  "KB6120E V1.03",	//	内部版本
+  "KB6120E V1.04",	//	内部版本
  __DATE__" V1.00",	//	显示版本
 };
 
@@ -54,7 +54,7 @@ void	ShowEdition( void )
 {
   switch( Configure.ExName )
   {
-  case  (enum enumExNameIdent) 0: 
+  case 0: 
     ShowEdition_NoName(); 
     break;
   default: 

@@ -1384,7 +1384,7 @@ BOOL	CalibrateFlow_1_Point_DEBUG( enum enumPumpSelect PumpSelect, uint16_t * con
 			{						
 				FP32	Ba = get_Ba();
 				FP32	Te = get_Te();
-				FP32	flow = Calc_flow( fstd, Te, 0.0f, Ba );	
+				FP32	flow = Calc_flow( fstd, Te, 0.0f, Ba, SamplerSelect );	
 				Flow = flow;
 				Lputs( 0x0000u, "流量倍率:" );	ShowI16U( 0x000Au, * p_FlowK, 0x0503u, NULL );	
 				Lputs ( 0x0200u, "工况:" );		ShowFP32( 0x0205u, flow, fmt, szUnit );

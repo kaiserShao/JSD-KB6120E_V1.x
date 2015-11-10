@@ -225,7 +225,8 @@ extern	void	CalibrateZero_R24( void );
 extern	void	CalibrateZero_SHI( void );
 
 extern	void	HCBox_Init( void );
-extern	void	SENSOR_Init( void );
+extern	void	SENSOR_Remote_Init( void );
+extern	void	SENSOR_Local_Init ( void );
 
 extern	void	ShowEdition( void );
 extern	void	ShowEdition_Inner( void );

@@ -23,7 +23,7 @@ static	FP32	MotorPID_fetchRunValue( enum enumPumpSelect PumpSelect )
 			FP32	fstd = get_fstd( PumpSelect );	
 			FP32	Te   = get_Te();
 			FP32	Ba   = get_Ba();
-			FP32	flow = Calc_flow( fstd, Te, 0.0f, Ba );
+			FP32	flow = Calc_flow( fstd, Te, 0.0f, Ba, Q_TSP );
 
 			return	flow;
 		}
