@@ -143,7 +143,6 @@ void	show_env_state( void )
 	}
 }
 static	FP32	fstdx[4][PP_Max];
-static	FP32	flowx[4][PP_Max];
 static	FP32	fstd, flow;
 void Sampler_TdMonitor( enum enumSamplerSelect SamplerSelect )
 {	
@@ -156,10 +155,6 @@ void Sampler_TdMonitor( enum enumSamplerSelect SamplerSelect )
       fstdx[1][PP_TSP] = fstdx[2][PP_TSP];
       fstdx[2][PP_TSP] = fstdx[3][PP_TSP];
       fstdx[3][PP_TSP] = get_fstd( PP_TSP );
-      flowx[0][PP_TSP] = flowx[1][PP_TSP];
-      flowx[1][PP_TSP] = flowx[2][PP_TSP];
-      flowx[2][PP_TSP] = flowx[3][PP_TSP];
-      flowx[3][PP_TSP] = Calc_flow( fstdx[3][PP_TSP], Te, 0.0f, Ba, SamplerSelect );
       break;
     case Q_SHI:
       fstdx[0][PP_SHI_C] = fstdx[1][PP_SHI_C];
