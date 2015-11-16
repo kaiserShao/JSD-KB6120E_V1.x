@@ -285,8 +285,8 @@ void	CalibrateLoad( void )
 		CalibrateRemote.DataValidMask = 0x5AA4u;
 	}
 }
-uint32_t	eDataValidMask;
 
+uint32_t	eDataValidMask;
 void	ConfigureSave( void )
 {
 	Esave( x_Configure, &Configure, sizeof(Configure));

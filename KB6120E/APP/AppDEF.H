@@ -272,6 +272,7 @@ extern	void	PWM2_SetOutput( uint16_t );
 
 extern BOOL	EditI32U( uint16_t yx, uint32_t * pNUM, uint16_t fmt );
 
+extern	uint32_t	eDataValidMask;
 extern void	EditionSelsct( void );
 #include "SENSOR.H"
 #include "EEPROM.H"

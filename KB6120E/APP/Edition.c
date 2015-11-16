@@ -8,7 +8,7 @@
 * ÐÞ¶©ÈË: 
 *******************************************************************************/
 #include "AppDEF.H"
-extern	uint32_t	eDataValidMask; 
+
 void	EditionSelsct( void )
 {
 // #define	T_KB6120A
@@ -330,7 +330,7 @@ void	Configure_InstrumentName( void )
 		case 1:
 			cls();			
 			++Configure.InstrumentName;
-			if ( Configure.InstrumentName >= type_Max )
+			if ( Configure.InstrumentName >= (sizeof(szNameIdent) / sizeof(szNameIdent[0] )) )	//	type_Max
 			{
 				Configure.InstrumentName = 0u;
 			}
