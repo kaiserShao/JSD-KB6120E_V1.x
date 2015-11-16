@@ -203,7 +203,6 @@ void	CalibrateSave( void )
 	Esave( x_CalibrateLocal,  &CalibrateLocal,  sizeof( CalibrateLocal  ));
 	Esave( x_CalibrateRemote, &CalibrateRemote, sizeof( CalibrateRemote ));
 }
-
 void	CalibrateLoad( void )
 {
 	Eload( x_CalibrateLocal,  &CalibrateLocal,  sizeof( CalibrateLocal  ));
@@ -286,6 +285,7 @@ void	CalibrateLoad( void )
 		CalibrateRemote.DataValidMask = 0x5AA4u;
 	}
 }
+uint32_t	eDataValidMask;
 
 void	ConfigureSave( void )
 {
@@ -294,11 +294,12 @@ void	ConfigureSave( void )
 
 void	ConfigureLoad( void )
 {
+	EditionSelsct();
 	Eload( x_Configure, &Configure, sizeof(Configure));
-	if ( Configure.DataValidMask != 0x55b7u )
+	if ( Configure.DataValidMask != eDataValidMask )
 	{
 		ConfigureLoadDefault();
-		Configure.DataValidMask = 0x55b7u;
+		Configure.DataValidMask = eDataValidMask;
 	}
 }
 

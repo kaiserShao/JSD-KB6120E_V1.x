@@ -8,6 +8,26 @@
 * 修订人: 
 *******************************************************************************/
 #include "AppDEF.H"
+extern	uint32_t	eDataValidMask; 
+void	EditionSelsct( void )
+{
+// #define	T_KB6120A
+// #define	T_KB6120AD
+// #define	T_KB6120AD2
+#define	T_KB2400HL
+
+	#ifdef	T_KB6120A
+		eDataValidMask = 0x5A3A;
+	#elif	defined	T_KB6120AD
+		eDataValidMask = 0x5A3B;
+	#elif	defined	T_KB6120AD2
+		eDataValidMask = 0x5A3C;
+	#elif	defined	T_KB2400HL
+		eDataValidMask = 0x5A3D;
+	#endif
+
+}
+
 
 /********************************** 功能说明 ***********************************
 *  根据仪器型号显示版本信息
@@ -15,21 +35,21 @@
 *******************************************************************************/
 CHAR  const * const ExNameIdent1[] =
 {
-  " 无 厂 家 名 称 ",
-  " 青 岛 金 仕 达 ",
+  " 无 厂 家 名 称 ",	//	0
+  " 青 岛 金 仕 达 ",	//	1
 //  ...  
 };
 
 CHAR  const * const ExNameIdent2[] =
 {
-  " 无 厂 家 名 称 ",
-  "电子科技有限公司",
+  " 无 厂 家 名 称 ",	//	0
+  "电子科技有限公司",	//	1
 //  ...  
 };
 
 CHAR  const * const EditionNum[] =
 {
-  "KB6120E V1.04",	//	内部版本
+  "KB6120E V1.06",	//	内部版本
  __DATE__" V1.00",	//	显示版本
 };
 
@@ -101,10 +121,7 @@ CHAR  const * const szNameIdent[] =
 	" 恒温恒流采样器 ",
 	" 智能恒流采样器 ",
 };
-// #define	T_KB6120A
- #define	T_KB6120AD
-// #define	T_KB6120AD2
-//#define	T_KB2400HL
+
 static	void	ConfigureLoad_KB6120A( void )
 {
 	#ifdef	T_KB6120A
@@ -116,8 +133,8 @@ static	void	ConfigureLoad_KB6120A( void )
 		Configure.PumpType[PP_SHI_C] = enumPumpNone;	Configure.SetFlow[PP_SHI_C]  =    5u;	//	时均1采样流量 0.5 L/m
 		Configure.PumpType[PP_SHI_D] = enumPumpNone;	Configure.SetFlow[PP_SHI_D]  =    5u;	//	时均2采样流量 0.5 L/m
 		Configure.PumpType[PP_AIR  ] = enumOrifice_1;	Configure.SetFlow[PP_AIR  ]  =  500u;	//	大气 流量 0.5 L/m
-		Configure.AIRSetFlow[Q_PP1] = 5;
-		Configure.AIRSetFlow[Q_PP2] = 5;
+		Configure.AIRSetFlow[Q_PP1] = 5u;
+		Configure.AIRSetFlow[Q_PP2] = 5u;
 		Configure.HeaterType = enumHeaterOnly;	//	只有加热器
 		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
 		Configure.Heater_SW = TRUE;          // 加热器工作
@@ -160,8 +177,8 @@ static	void	ConfigureLoad_KB2400HL( void )
 		Configure.PumpType[PP_SHI_D] = enumOrifice_1;	Configure.SetFlow[PP_SHI_D]  =    5u;	//	时均2 采样流量 0.5 L/m
 		Configure.PumpType[PP_AIR  ] = enumPumpNone;	Configure.SetFlow[PP_AIR  ]  =  500u;	//	大气 流量 0.5 L/m
 		
-		Configure.AIRSetFlow[Q_PP1] = 5;
-		Configure.AIRSetFlow[Q_PP2] = 5;
+		Configure.AIRSetFlow[Q_PP1] = 5u;
+		Configure.AIRSetFlow[Q_PP2] = 5u;
 		
 		Configure.HeaterType = enumHeaterOnly;	//	只有加热器
 		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
@@ -206,8 +223,8 @@ static	void	ConfigureLoad_KB6120AD( void )
 		Configure.PumpType[PP_SHI_C] = enumOrifice_1;	Configure.SetFlow[PP_SHI_C]  =    5u;	//	时均1 采样流量 0.5 L/m
 		Configure.PumpType[PP_SHI_D] = enumOrifice_1;	Configure.SetFlow[PP_SHI_D]  =    5u;	//	时均2 采样流量 0.5 L/m
 		Configure.PumpType[PP_AIR  ] = enumPumpNone;	Configure.SetFlow[PP_AIR  ]  =  500u;	//	大气 流量 0.5 L/m
-		Configure.AIRSetFlow[Q_PP1] = 5;
-		Configure.AIRSetFlow[Q_PP2] = 5;
+		Configure.AIRSetFlow[Q_PP1] = 5u;
+		Configure.AIRSetFlow[Q_PP2] = 5u;
 		
 		Configure.HeaterType = enumHeaterOnly;	//	只有加热器
 		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
@@ -251,8 +268,8 @@ static	void	ConfigureLoad_KB6120AD2( void )
 		Configure.PumpType[PP_SHI_C] = enumPumpNone;	Configure.SetFlow[PP_SHI_C]  =    5u;	//	时均1 采样流量 0.5 L/m
 		Configure.PumpType[PP_SHI_D] = enumPumpNone;	Configure.SetFlow[PP_SHI_D]  =    5u;	//	时均2 采样流量 0.5 L/m
 		Configure.PumpType[PP_AIR  ] = enumPumpNone;	Configure.SetFlow[PP_AIR  ]  =  500u;	//	大气 流量 0.5 L/m
-		Configure.AIRSetFlow[Q_PP1] = 5;
-		Configure.AIRSetFlow[Q_PP2] = 5;
+		Configure.AIRSetFlow[Q_PP1] = 5u;
+		Configure.AIRSetFlow[Q_PP2] = 5u;
 		Configure.HeaterType = enumHeaterOnly;	//	只有加热器
 		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
 		Configure.Heater_SW = TRUE;          // 加热器工作

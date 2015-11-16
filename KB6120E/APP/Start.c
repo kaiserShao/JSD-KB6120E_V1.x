@@ -176,7 +176,7 @@ __task	int32_t	main( void )
 	Keyboard_Init();	//	配置完背光超时时间后再初始化。
 
 	ShowEdition();		//	版本显示 确定型号之后，显示初始化之后	
-	SENSOR_Local_Init();
+	SENSOR_Local_Init();	//	本地传感器读取以及液晶灰度调节
 	
 	RTC_Init();			  //	为避免启动过程中时钟失败造成的假死现象，放在显示初始化之后
 	
@@ -184,9 +184,9 @@ __task	int32_t	main( void )
 	delay( 500u );
 	PowerLog_Init();	//	开关机存取，时间和SD卡初始化之后
 	
-	delay( 2500u );		//  配合下位机初始化
+	delay( 2000u );		//  配合下位机初始化
 	SENSOR_Remote_Init();		//	modbus通信初始化
-	
+
 	HCBox_Init();
 	delay( 500u );
 	

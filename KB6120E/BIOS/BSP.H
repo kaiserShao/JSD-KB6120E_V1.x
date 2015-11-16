@@ -90,7 +90,6 @@ typedef	uint8_t	uKey;
 #define	K_UP	_Key5
 #define	K_LEFT	_Key6
 #define	K_DOWN	_Key7
-#define	K_SHIFT_UP ( _Key2 && _Key5 )
 
 #define	K_OK_UP 	 ( _Key1 | _Key5 )
 #define	K_OK_DOWN  ( _Key1 | _Key7 )

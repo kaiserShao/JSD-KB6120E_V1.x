@@ -460,15 +460,10 @@ void	Query_File_TSP( void )
 			}
 
 			File_Load_TSP ( fname, &File );
-			
-			if ( 0u != File.sample_begin )
+			FileNum = fname;
+			if ( 0u == File.sample_begin )
 			{
-				FileNum = fname;
-			}
-			else
-			{
-				beep();	//	到达最前！"前"面无有效数据
-				File_Load_TSP ( FileNum, &File );
+				beep();	//	此文件可能无效！
 			}
 		}	break;
 
@@ -488,15 +483,16 @@ void	Query_File_TSP( void )
 			}
 
 			File_Load_TSP ( fname, &File );
-
-			if ( 0u != File.sample_begin )
+			if( fname > SampleSet[Q_TSP].FileNum )
 			{
-				FileNum = fname;
-			}
-			else
-			{
-				beep();	//	到达最后，"后"面无有效数据
+				beep();//	到达最后，"后"面无有效数据
 				File_Load_TSP ( FileNum, &File );
+			}
+			else	
+			{
+				if ( 0u == File.sample_begin )
+					beep();
+				FileNum = fname;
 			}
 		}	break;
   
@@ -697,25 +693,20 @@ void	Query_File_R24( void )
 			
 			if ( FileNum == 1u )
 			{
-				fname = 1 ;
+				fname = 1;
 				beep();
-				MsgBox( "无更多文件!", vbOKOnly );		
+				MsgBox( "无更多文件!", vbOKOnly );
 			}
 			else
 			{
-				fname = FileNum - 1u;
+				fname = FileNum - 1u;			
 			}
 
 			File_Load_R24 ( fname, &File );
-			
-			if ( 0u != File.sample_begin )
+			FileNum = fname;
+			if ( 0u == File.sample_begin )
 			{
-				FileNum = fname;
-			}
-			else
-			{
-				beep();	//	到达最前！"前"面无有效数据
-				File_Load_R24 ( FileNum, &File );
+				beep();	//	此文件可能无效！
 			}
 		}	break;
 
@@ -725,25 +716,26 @@ void	Query_File_R24( void )
 			
 			if ( FileNum == FileNum_Max )
 			{
-				fname =  FileNum_Max;
-				beep();	
-				MsgBox(  "文件满！", vbOKOnly );
-			} 
+				fname = FileNum_Max;
+				beep();
+				MsgBox( "文件满！", vbOKOnly );	
+			}
 			else
 			{
 				fname = FileNum + 1u;
 			}
 
 			File_Load_R24 ( fname, &File );
-
-			if ( 0u != File.sample_begin )
+			if( fname > SampleSet[Q_R24].FileNum )
 			{
-				FileNum = fname;
-			}
-			else
-			{
-				beep();	//	到达最后，"后"面无有效数据
+				beep();//	到达最后，"后"面无有效数据
 				File_Load_R24 ( FileNum, &File );
+			}
+			else	
+			{
+				if ( 0u == File.sample_begin )
+					beep();
+				FileNum = fname;
 			}
 		}	break;
 
@@ -949,23 +941,18 @@ void	Query_File_SHI( void )
 			{
 				fname = 1;
 				beep();
-				MsgBox( "无更多文件!", vbOKOnly );	
+				MsgBox( "无更多文件!", vbOKOnly );
 			}
 			else
 			{
-				fname = FileNum - 1u;
+				fname = FileNum - 1u;			
 			}
 
 			File_Load_SHI ( fname, &File );
-			
-			if ( 0u != File.sample_begin )
+			FileNum = fname;
+			if ( 0u == File.sample_begin )
 			{
-				FileNum = fname;
-			}
-			else
-			{
-				beep();	//	到达最前！"前"面无有效数据
-				File_Load_SHI ( FileNum, &File );
+				beep();	//	此文件可能无效！
 			}
 		}	break;
 
@@ -975,9 +962,9 @@ void	Query_File_SHI( void )
 			
 			if ( FileNum == FileNum_Max )
 			{
-				fname =  FileNum_Max;
+				fname = FileNum_Max;
 				beep();
-				MsgBox(  "文件满！", vbOKOnly );	
+				MsgBox( "文件满！", vbOKOnly );	
 			}
 			else
 			{
@@ -985,15 +972,16 @@ void	Query_File_SHI( void )
 			}
 
 			File_Load_SHI ( fname, &File );
-
-			if ( 0u != File.sample_begin )
+			if( fname > SampleSet[Q_SHI].FileNum )
 			{
-				FileNum = fname;
-			}
-			else
-			{
-				beep();	//	到达最后，"后"面无有效数据
+				beep();//	到达最后，"后"面无有效数据
 				File_Load_SHI ( FileNum, &File );
+			}
+			else	
+			{
+				if ( 0u == File.sample_begin )
+					beep();
+				FileNum = fname;
 			}
 		}	break;
 
@@ -1117,23 +1105,23 @@ void	Query_File_AIR( void )
 			switch ( option )
 			{
 			case opt_air_1:
-				Lputs( 0x000Bu, "[1/2]" );
+				Lputs( 0x000Bu, "[1/4]" );
 				Lputs( 0x0200u, "开始:" );	    ShowDATE( 0x0205u, File.sample_begin );
 				Lputs( 0x0400u, "采样次数:" );	ShowI16U( 0x0409u, File.run_loops,   0x0200u, NULL );
 				Lputs( 0x0600u, "设置次数:" );	ShowI16U( 0x0609u, File.set_loops,   0x0200u, NULL );
 				break;
 			case opt_air_2:
-				Lputs( 0x000Bu, "[2/2]" );
+				Lputs( 0x000Bu, "[2/4]" );
 				Lputs( 0x0300u, "采样时间:" );	ShowTIME( 0x0309u, File.sum_min  );
 				Lputs( 0x0600u, "设置时间:" );	ShowTIME( 0x0609u, File.set_time );
 				break;
 			case opt_air_3:
-				Lputs( 0x000Bu, "[1/3]" );
+				Lputs( 0x000Bu, "[3/4]" );
 				Lputs ( 0x0300u, "流 量Ⅰ:" );		ShowFP32 ( 0x0308u, (uint32_t)( Configure.AIRSetFlow[Q_PP1]) * 0.1f,  0x0501u, "L/m" );
 				Lputs ( 0x0600u, "体 积Ⅰ:" );		ShowFP32 ( 0x0608u, (uint32_t)( File.sum_min * Configure.AIRSetFlow[Q_PP1] ) * 0.1f,  0x0501u, "L" );
 				break;
 			case opt_air_4:
-				Lputs( 0x000Bu, "[1/4]" );
+				Lputs( 0x000Bu, "[4/4]" );
 				Lputs ( 0x0300u, "流 量Ⅱ:" );		ShowFP32 ( 0x0308u, (uint32_t)(Configure.AIRSetFlow[Q_PP2] ) * 0.1f,  0x0501u, "L/m" );
 				Lputs ( 0x0600u, "体 积Ⅱ:" );		ShowFP32 ( 0x0608u, (uint32_t)( File.sum_min * Configure.AIRSetFlow[Q_PP2] ) * 0.1f,  0x0501u, "L" );	
 				break;
@@ -1150,25 +1138,20 @@ void	Query_File_AIR( void )
 			
 			if ( FileNum == 1u )
 			{
-				fname =1;
-				beep();	 
+				fname = 1;
+				beep();
 				MsgBox( "无更多文件!", vbOKOnly );
 			}
 			else
 			{
-				fname = FileNum - 1u;
+				fname = FileNum - 1u;			
 			}
 
 			File_Load_AIR ( fname, &File );
-			
-			if ( 0u != File.sample_begin )
+			FileNum = fname;
+			if ( 0u == File.sample_begin )
 			{
-				FileNum = fname;
-			}
-			else
-			{
-				beep();	//	到达最前！"前"面无有效数据
-				File_Load_AIR ( FileNum, &File );
+				beep();	//	此文件可能无效！
 			}
 		}	break;
 
@@ -1178,9 +1161,9 @@ void	Query_File_AIR( void )
 			
 			if ( FileNum == FileNum_Max )
 			{
-				fname =  FileNum_Max;
-				beep();	
-				MsgBox( "文件满！", vbOKOnly );
+				fname = FileNum_Max;
+				beep();
+				MsgBox( "文件满！", vbOKOnly );	
 			}
 			else
 			{
@@ -1188,15 +1171,16 @@ void	Query_File_AIR( void )
 			}
 
 			File_Load_AIR ( fname, &File );
-
-			if ( 0u != File.sample_begin )
+			if( fname > SampleSet[Q_AIR].FileNum )
 			{
-				FileNum = fname;
-			}
-			else
-			{
-				beep();	//	到达最后，"后"面无有效数据
+				beep();//	到达最后，"后"面无有效数据
 				File_Load_AIR ( FileNum, &File );
+			}
+			else	
+			{
+				if ( 0u == File.sample_begin )
+					beep();
+				FileNum = fname;
 			}
 		}	break;
 

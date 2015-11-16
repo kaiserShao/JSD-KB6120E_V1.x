@@ -88,6 +88,7 @@ struct	uFile_TSP //: public uFile
 //	public:
 //		void	Save( uint16_t FileNum );
 //		void	Load( uint16_t FileNum );
+// 	uint32_t	DataValidMask;
 };
 
 struct	uFile_SHI
@@ -111,6 +112,7 @@ struct	uFile_SHI
 //	public:
 //		void	Save( uint16_t FileNum );
 //		void	Load( uint16_t FileNum );
+// 	uint32_t	DataValidMask;
 };
 
 struct	uFile_R24	//	日均与时均使用的记录结构完全相同，但分别定义，便于进行类型检查
@@ -135,10 +137,12 @@ struct	uFile_R24	//	日均与时均使用的记录结构完全相同，但分别定义，便于进行类型检
 //	public:
 //		void	Save( uint16_t FileNum );
 //		void	Load( uint16_t FileNum );
+// 	uint32_t	DataValidMask;
 };
 
 struct	uFile_AIR
 {
+	
 	uint32_t	sample_begin;		//	记录采样开始时间
 	uint16_t	set_time;			//	设置采样时间
 	uint16_t	set_flow[2];			//	设置采样流量
@@ -152,6 +156,7 @@ struct	uFile_AIR
 //	public:
 //		void	Save( uint16_t FileNum );
 //		void	Load( uint16_t FileNum );
+// 	uint32_t	DataValidMask;
 };
 
 

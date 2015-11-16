@@ -106,7 +106,7 @@ void  _task_Sample_TSP( void )
 				File.vd      =
 				File.vnd     = 0.0f;
 				File.sum_Ba  = 0.0f;
-        
+//         File.DataValidMask = 0x1234;
 				
 
 			File_Save_TSP( fname, &File );
@@ -237,6 +237,7 @@ void  _task_Sample_TSP( void )
 							File.set_flow 	= Configure.SetFlow[SamplerSelect];
 
 							File.sample_begin = now_minute * 60u + 1u;
+// 							File.DataValidMask = 0x1234;
 						}
 
 						if ( PumpState )

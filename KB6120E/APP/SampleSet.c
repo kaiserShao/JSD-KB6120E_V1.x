@@ -23,7 +23,7 @@ void	SetupFlow_AIR( void )
 		{ 0x0300u, "流量Ⅰ" },
 		{ 0x0500u, "流量Ⅱ" },
 	};
-	uint8_t item = 1u;
+	uint8_t item = 0u;
 	
 	uint16_t	iflow = Configure.AIRSetFlow[Q_PP1];
 	uint16_t	iiflow = Configure.AIRSetFlow[Q_PP2];
@@ -35,7 +35,7 @@ void	SetupFlow_AIR( void )
 		ShowI16U( 0x0308u, iflow, 0x0301u, "L/m" );
 		ShowI16U( 0x0508u, iiflow, 0x0301u, "L/m" );
 
-		item = Menu_Select2( menu, item ,FALSE);
+		item = Menu_Select2( menu, item + 1 ,FALSE);
 
 		switch ( item )
 		{

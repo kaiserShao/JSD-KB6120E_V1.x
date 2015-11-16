@@ -73,7 +73,7 @@ void	LCD_Volt_Adjust( void )
 
 		Ek = ( LCDSetGrayVolt - LCDVolt ) * 1.0f;
 		Ui += Ek * 0.020f;
-		Uout = Uout * 0.1f + ( Ek * 0.025f + Ui ) * 0.9f;
+		Uout = Uout * 0.1f + ( Ek * 0.005f + Ui ) * 0.9f;
 
 		if ( Uout > 0.20f ){ Uout = 0.20f; }//	最大输出 20 %
 		if ( Uout < 0.02f ){ Uout = 0.02f; }//	最小输出  2 %
@@ -186,11 +186,8 @@ const uint8_t SubSlave = 1u;
 
 void	Motor_OutCmd( enum enumPumpSelect PumpSelect, BOOL NewState )
 {
-	uint16_t	RegAddress;
-	uint8_t		RegValue   = NewState ? 0x01u : 0x00u;
-
-		RegAddress = DO_Base + BaseList[PumpSelect];
-	
+	uint16_t	RegAddress = DO_Base + BaseList[PumpSelect];
+	uint8_t		RegValue   = NewState ? 0x01u : 0x00u;	
 	if( PumpSelect == PP_AIR)
 		AIRLightOutCmd( NewState );
 	eMBMWrite( SubSlave, RegAddress, 1u, &RegValue );
@@ -198,10 +195,8 @@ void	Motor_OutCmd( enum enumPumpSelect PumpSelect, BOOL NewState )
 
 void	Motor_SetOutput( enum enumPumpSelect PumpSelect, uint16_t OutValue )
 {
-	uint16_t	RegAddress;		
-	uint16_t	RegValue   = OutValue;
-
-		RegAddress = AO_Base + BaseList[PumpSelect];
+	uint16_t	RegAddress = AO_Base + BaseList[PumpSelect];		
+	uint16_t	RegValue   = OutValue;	
 	eMBMWrite( SubSlave, RegAddress, 1u, &RegValue );
 }
 
@@ -469,14 +464,15 @@ void	menu_FactoryDebug( void )
 			switch ( option )
 			{
 			case opt_TSP:
-            case opt_R24_A:
-            case opt_R24_B:
-            case opt_SHI_C:
-            case opt_SHI_D:
+			case opt_R24_A:
+			case opt_R24_B:
+			case opt_SHI_C:
+			case opt_SHI_D:
 				OutState[PumpSelect] = FALSE;
+				Motor_SetOutput( PumpSelect, 0 );
 				Motor_OutCmd   ( PumpSelect, OutState[PumpSelect] );
 				break;
-            case opt_AIR:		
+			case opt_AIR:		
 				OutState[PumpSelect] = FALSE;
 				Motor_OutCmd   ( PumpSelect, OutState[PumpSelect] );
 				break;
