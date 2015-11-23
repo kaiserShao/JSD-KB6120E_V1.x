@@ -12,9 +12,9 @@
 void	EditionSelsct( void )
 {
 // #define	T_KB6120A
-// #define	T_KB6120AD
+#define	T_KB6120AD
 // #define	T_KB6120AD2
-	#define	T_KB2400HL
+// 	#define	T_KB2400HL
 
 	#ifdef	T_KB6120A
 		eDataValidMask = 0x5A3A;
@@ -270,7 +270,7 @@ void	Configure_InstrumentName( void )
 	{
 		if( vbYes == MsgBox( "±£¥Ê≈‰÷√?",vbYesNo ) )
 		{
-			ConfigureLoadDefault();
+// 			ConfigureLoadDefault();
 			ConfigureSave();
 		}
 		else

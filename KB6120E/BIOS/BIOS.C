@@ -617,15 +617,15 @@ uint8_t	bus_i2c_shin( enum I2C_AcknowlegeSet AcknowlegeSet )
 }
 
 // /********************************** 功能说明 ***********************************
-// *	访问 SPI 总线( SPI1x )
+// *	访问 SPI 总线( SPIx )
 // *******************************************************************************/
 // #ifdef	SimulationSPI
 
-// #define	Pin_SPI1xSCK		PinBB( GPIOB->ODR,  3U )
-// #define	Pin_SPI1xMISO		PinBB( GPIOB->IDR,  4U )
-// #define	Pin_SPI1xMOSI		PinBB( GPIOB->ODR,  5U )
+// #define	Pin_SPIxSCK		PinBB( GPIOB->ODR,  3U )
+// #define	Pin_SPIxMISO		PinBB( GPIOB->IDR,  4U )
+// #define	Pin_SPIxMOSI		PinBB( GPIOB->ODR,  5U )
 
-// uint8_t bus_SPI1xShift( uint8_t OutByte )
+// uint8_t bus_SPIxShift( uint8_t OutByte )
 // {
 // 	uint8_t i;
 // 	
@@ -634,20 +634,20 @@ uint8_t	bus_i2c_shin( enum I2C_AcknowlegeSet AcknowlegeSet )
 // 		delay_us( 1 );
 // 		if ( OutByte & 0x80u )
 // 		{
-// 			Pin_SPI1xMOSI = 1;
+// 			Pin_SPIxMOSI = 1;
 // 		}
 // 		else
 // 		{
-// 			Pin_SPI1xMOSI = 0;
+// 			Pin_SPIxMOSI = 0;
 // 		}
 
 // 		delay_us( 1 );
-// 		Pin_SPI1xSCK = 0;
+// 		Pin_SPIxSCK = 0;
 
 // 		delay_us( 1 );
 
 // 		OutByte <<= 1;
-// 		if ( Pin_SPI1xMISO )
+// 		if ( Pin_SPIxMISO )
 // 		{
 // 			OutByte |= 0x01u;
 // 		}
@@ -657,26 +657,26 @@ uint8_t	bus_i2c_shin( enum I2C_AcknowlegeSet AcknowlegeSet )
 // 		}
 
 // 		delay_us( 1 );
-// 		Pin_SPI1xSCK = 1;
+// 		Pin_SPIxSCK = 1;
 // 	}
 // 	
 // 	return	OutByte;
 // }
 
 
-// void	bus_SPI1xPortInit( void )
+// void	bus_SPIxPortInit( void )
 // {
 // 	SET_BIT( RCC->APB2ENR, RCC_APB2ENR_AFIOEN );
 //  	MODIFY_REG( AFIO->MAPR, AFIO_MAPR_SWJ_CFG, AFIO_MAPR_SWJ_CFG_JTAGDISABLE );
 
 //  	SET_BIT( RCC->APB2ENR, RCC_APB2ENR_IOPBEN );
-// 	Pin_SPI1xSCK = 1;
+// 	Pin_SPIxSCK = 1;
 //  	MODIFY_REG( GPIOB->CRL, 0x00FFF000u, 0x00343000u );
 // }
 
 // #else
 
-// uint8_t bus_SPI1xShift( uint8_t IOByte )
+// uint8_t bus_SPIxShift( uint8_t IOByte )
 // {
 // 	SPI_TypeDef * SPIx = SPI1;
 
@@ -688,7 +688,7 @@ uint8_t	bus_i2c_shin( enum I2C_AcknowlegeSet AcknowlegeSet )
 // 	return	IOByte;
 // }
 
-// void	bus_SPI1xPortInit( void )
+// void	bus_SPIxPortInit( void )
 // {
 // 	SPI_TypeDef * SPIx = SPI1;
 
@@ -993,14 +993,14 @@ void	Speaker_OutCmd( BOOL NewState )
 
 void	beep( void )
 {
-	Speaker_OutCmd( TRUE );
+// 	Speaker_OutCmd( TRUE );
 	delay( 200u );
 	Speaker_OutCmd( FALSE );
 }
 
 void	tick( void )
 {
-	Speaker_OutCmd( TRUE );
+// 	Speaker_OutCmd( TRUE );
 	delay( 20u );
 	Speaker_OutCmd( FALSE );
 }

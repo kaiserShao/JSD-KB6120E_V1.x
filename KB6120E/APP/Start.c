@@ -57,7 +57,7 @@ void	menu_Main( void )
 		Menu_Redraw( menu );
 		SamplerTypeShow( 0x000Au );
 
-		item = Menu_SelectOnly( menu, item, FALSE, show_std_clock );
+		item = Menu_SelectOnly( menu, item, show_std_clock );
 		
 		switch( item )
 		{

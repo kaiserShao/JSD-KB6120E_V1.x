@@ -758,7 +758,7 @@ uint32_t	InputPassword( void )
 	
 	if ( ! EditI32U( 0x0305u, &password, 0x0600u ))
 	{
-		return  0u;
+		return NULL;
 	}
 	return  password;
 }
