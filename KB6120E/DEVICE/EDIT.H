@@ -18,9 +18,11 @@ extern	void	Menu_Redraw    ( const struct uMenu * menu );
 extern	uint8_t	Menu_Select     ( const struct uMenu * menu, uint8_t item );
 extern	uint8_t	Menu_Select2    ( const struct uMenu * menu, uint8_t item, BOOL Direction );
 extern  uint8_t	Menu_Select3	  ( const struct uMenu * menu, uint8_t item, uint8_t timeout );
+extern	uint8_t	Menu_SelectOnly  ( const struct uMenu * menu, uint8_t item, BOOL Direction , void ( *pHook ) ( void ));
 extern	uint8_t	Menu_Select_Ex  ( const struct uMenu * menu, uint8_t item, void ( *pHook )( void ) );
 extern	uint8_t	Menu_Select_Ex2 ( const struct uMenu * menu, uint8_t item, void ( *pHook )( void ), BOOL Direction );
 extern	uint8_t	Menu_Select_Ex3 ( const struct uMenu * menu, uint8_t item, void ( *pHook ) ( void ), uint8_t timeout );
+extern	uint8_t	Menu_SelectOnlyEx ( const struct uMenu * menu, uint8_t item, void ( *pHook ) ( void ),BOOL Direction ); 
 ///////////////////////////////////////////////////////////////////
 //	MsgBox
 ///////////////////////////////////////////////////////////////////

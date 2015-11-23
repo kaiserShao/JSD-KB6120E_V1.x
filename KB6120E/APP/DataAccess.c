@@ -294,7 +294,7 @@ void	ConfigureSave( void )
 
 void	ConfigureLoad( void )
 {
-	EditionSelsct();
+
 	Eload( x_Configure, &Configure, sizeof(Configure));
 	if ( Configure.DataValidMask != eDataValidMask )
 	{

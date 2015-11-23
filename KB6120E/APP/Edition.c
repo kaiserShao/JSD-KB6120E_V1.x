@@ -14,7 +14,7 @@ void	EditionSelsct( void )
 // #define	T_KB6120A
 // #define	T_KB6120AD
 // #define	T_KB6120AD2
-#define	T_KB2400HL
+	#define	T_KB2400HL
 
 	#ifdef	T_KB6120A
 		eDataValidMask = 0x5A3A;
@@ -37,14 +37,16 @@ CHAR  const * const ExNameIdent1[] =
 {
   " 无 厂 家 名 称 ",	//	0
   " 青 岛 金 仕 达 ",	//	1
-//  ...  
+	
+//  ...  							//	...
 };
 
 CHAR  const * const ExNameIdent2[] =
 {
   " 无 厂 家 名 称 ",	//	0
   "电子科技有限公司",	//	1
-//  ...  
+	
+//  ...  							//	...
 };
 
 CHAR  const * const EditionNum[] =
@@ -121,10 +123,37 @@ CHAR  const * const szNameIdent[] =
 	" 恒温恒流采样器 ",
 	" 智能恒流采样器 ",
 };
-
-static	void	ConfigureLoad_KB6120A( void )
+void	ConfigureLoadDefault_KB6120E( void )
 {
-	#ifdef	T_KB6120A
+		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
+		Configure.Heater_SW = FALSE;         //加热器开关			
+		Configure.HCBox_SetMode = MD_Shut;		//	恒温箱控制模式 [关闭]
+		Configure.HCBox_SetTemp = 240u;			//	恒温箱恒温温度 24.0 ℃
+				 
+		Configure.SetTstd = enum_293K;			//	标况流量的定义温度 
+		
+		Configure.Mothed_Delay = enumByDelay;	//	采样开始时间方式
+		Configure.Mothed_Sample = enumBySet;	//	采样时间控制方式
+
+		Configure.Mothed_Ba = enumMeasureBa;	//	大气压力获取方式
+		Configure.set_Ba    = 10133u;			//	保存用户输入气压
+
+		Configure.DisplayGray  = 2000u;	//	显示灰度设置
+		Configure.DisplayLight = 50u;	//	显示亮度设置
+		Configure.TimeoutLight = 2u;	//	背光延时时间
+		
+		Configure.slope_Bat_Voltage = 1000;
+		Configure.slope_Bat_Current = 1000;
+		Configure.threshold_Current = 100;
+		
+		Configure.shouldCalcPbv = 0;		//	饱和水汽压是否参与计算。
+		
+		Configure.Password = 633817;
+		Configure.ExName = Name_JSD;
+		
+}
+void	ConfigureLoad_KB6120A( void )
+{
 		Configure.InstrumentType = type_KB6120A;
 
 		Configure.PumpType[PP_TSP  ] = enumOrifice_1;	Configure.SetFlow[PP_TSP  ]  = 1000u;	//	粉尘 采样流量 100.0 L/m
@@ -135,39 +164,15 @@ static	void	ConfigureLoad_KB6120A( void )
 		Configure.PumpType[PP_AIR  ] = enumOrifice_1;	Configure.SetFlow[PP_AIR  ]  =  500u;	//	大气 流量 0.5 L/m
 		Configure.AIRSetFlow[Q_PP1] = 5u;
 		Configure.AIRSetFlow[Q_PP2] = 5u;
+		
 		Configure.HeaterType = enumHeaterOnly;	//	只有加热器
-		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
-		Configure.Heater_SW = TRUE;          // 加热器工作
-		
-		Configure.HCBox_SetMode = MD_Shut;		//	恒温箱控制模式 [关闭]
-		Configure.HCBox_SetTemp = 240u;			//	恒温箱恒温温度 24.0 ℃
-
-		Configure.SetTstd = enum_293K;			//	标况流量的定义温度 
-		
-		Configure.Mothed_Delay = enumByDelay;	//	采样开始时间方式
-		Configure.Mothed_Sample = enumBySet;	//	采样时间控制方式
-
-		Configure.Mothed_Ba = enumMeasureBa;	//	大气压力获取方式
-		Configure.set_Ba    = 10133u;			//	保存用户输入气压
-
-		Configure.DisplayGray  = 500u;	//	显示灰度设置
-		Configure.DisplayLight = 50u;	//	显示亮度设置
-		Configure.TimeoutLight = 2u;	//	背光延时时间
-		
-		Configure.slope_Bat_Voltage = 1000;
-		Configure.slope_Bat_Current = 1000;
-		Configure.threshold_Current = 50;
 		
 		Configure.Battery_SW = FALSE;    //电池是否存在
-		Configure.ExName = Name_JSD;
-		Configure.Password = 633817;
-	
-	#endif
 }
 
-static	void	ConfigureLoad_KB2400HL( void )
+void	ConfigureLoad_KB2400HL( void )
 {
-	#ifdef	T_KB2400HL
+
 		Configure.InstrumentType = type_KB2400HL;
 
 		Configure.PumpType[PP_TSP  ] = enumPumpNone;	Configure.SetFlow[PP_TSP  ]  = 1000u;	//	粉尘  采样流量 100.0 L/m
@@ -181,40 +186,13 @@ static	void	ConfigureLoad_KB2400HL( void )
 		Configure.AIRSetFlow[Q_PP2] = 5u;
 		
 		Configure.HeaterType = enumHeaterOnly;	//	只有加热器
-		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
-		Configure.Heater_SW = TRUE;         //加热器开关	
-		
-		Configure.HCBox_SetMode = MD_Shut;		//	恒温箱控制模式 [关闭]
-		Configure.HCBox_SetTemp = 240u;			//	恒温箱恒温温度 24.0 ℃
-				 
-		Configure.SetTstd = enum_293K;			//	标况流量的定义温度 
-		
-		Configure.Mothed_Delay = enumByDelay;	//	采样开始时间方式
-		Configure.Mothed_Sample = enumBySet;	//	采样时间控制方式
-
-		Configure.Mothed_Ba = enumMeasureBa;	//	大气压力获取方式
-		Configure.set_Ba    = 10133u;			//	保存用户输入气压
-
-		Configure.DisplayGray  = 500u;	//	显示灰度设置
-		Configure.DisplayLight = 50u;	//	显示亮度设置
-		Configure.TimeoutLight = 2u;	//	背光延时时间
-		
-		Configure.slope_Bat_Voltage = 1000;
-		Configure.slope_Bat_Current = 1000;
-		Configure.threshold_Current = 50;
-		
-		Configure.shouldCalcPbv = 0;		//	饱和水汽压是否参与计算。
 		
 		Configure.Battery_SW = TRUE;
-		Configure.ExName = Name_JSD;
-		Configure.Password = 633817;
-		
-	#endif
+
 }
 
-static	void	ConfigureLoad_KB6120AD( void )
+void	ConfigureLoad_KB6120AD( void )
 {
-	#ifdef	T_KB6120AD
 		Configure.InstrumentType = type_KB6120AD;
 
 		Configure.PumpType[PP_TSP  ] = enumOrifice_1;	Configure.SetFlow[PP_TSP  ]  = 1000u;	//	粉尘  采样流量 100.0 L/m
@@ -227,39 +205,12 @@ static	void	ConfigureLoad_KB6120AD( void )
 		Configure.AIRSetFlow[Q_PP2] = 5u;
 		
 		Configure.HeaterType = enumHeaterOnly;	//	只有加热器
-		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
-		Configure.Heater_SW = TRUE;          // 加热器工作
-		
-		Configure.HCBox_SetMode = MD_Shut;		//	恒温箱控制模式 [关闭]
-		Configure.HCBox_SetTemp = 240u;			//	恒温箱恒温温度 24.0 ℃
-			
-		Configure.SetTstd = enum_293K;			//	标况流量的定义温度 
-		
-		Configure.Mothed_Delay  = enumByDelay;	//	采样开始时间方式
-		Configure.Mothed_Sample = enumBySet;	//	采样时间控制方式
-			
-		Configure.Mothed_Ba = enumMeasureBa;	//	大气压力获取方式
-		Configure.set_Ba    = 10133u;			//	保存用户输入气压
-			
-		Configure.DisplayGray  = 500u;	//	显示灰度设置
-		Configure.DisplayLight = 55u;	//	显示亮度设置
-		Configure.TimeoutLight = 2u;	//	背光延时时间
-		
-		Configure.slope_Bat_Voltage = 1000;
-		Configure.slope_Bat_Current = 1000;
-		Configure.threshold_Current = 50;	
-		
-		Configure.shouldCalcPbv = 0;		//	饱和水汽压是否参与计算。
-		
+
 		Configure.Battery_SW = FALSE;
-		Configure.ExName = Name_JSD;
-		Configure.Password = 633817;
-	#endif
 }
 
-static	void	ConfigureLoad_KB6120AD2( void )
+void	ConfigureLoad_KB6120AD2( void )
 {
-	#ifdef	T_KB6120AD2
 		Configure.InstrumentType = type_KB6120AD2;
 
 		Configure.PumpType[PP_TSP  ] = enumOrifice_1;	Configure.SetFlow[PP_TSP  ]  = 1000u;	//	粉尘  采样流量 100.0 L/m
@@ -270,36 +221,10 @@ static	void	ConfigureLoad_KB6120AD2( void )
 		Configure.PumpType[PP_AIR  ] = enumPumpNone;	Configure.SetFlow[PP_AIR  ]  =  500u;	//	大气 流量 0.5 L/m
 		Configure.AIRSetFlow[Q_PP1] = 5u;
 		Configure.AIRSetFlow[Q_PP2] = 5u;
+		
 		Configure.HeaterType = enumHeaterOnly;	//	只有加热器
-		Configure.Heater_SetTemp = 300u;		//	加热器恒温温度 30.0 ℃
-		Configure.Heater_SW = TRUE;          // 加热器工作
 
-		Configure.HCBox_SetMode = MD_Shut;		//	恒温箱控制模式 [关闭]
-		Configure.HCBox_SetTemp = 240u;			//	恒温箱恒温温度 24.0 ℃
-
-		Configure.SetTstd = enum_293K;			//	标况流量的定义温度 
-		
-		Configure.Mothed_Delay = enumByDelay;	//	采样开始时间方式
-		Configure.Mothed_Sample = enumBySet;	//	采样时间控制方式
-
-		Configure.Mothed_Ba = enumMeasureBa;	//	大气压力获取方式
-		Configure.set_Ba    = 10133u;			//	保存用户输入气压
-
-		Configure.DisplayGray  = 500u;	//	显示灰度设置
-		Configure.DisplayLight = 55u;	//	显示亮度设置
-		Configure.TimeoutLight = 2u;	//	背光延时时间
-		
-		Configure.slope_Bat_Voltage = 1000;
-		Configure.slope_Bat_Current = 1000;
-		Configure.threshold_Current = 50;
-		
-		Configure.shouldCalcPbv = 0;		//	饱和水汽压是否参与计算。
-		
-		Configure.Battery_SW = FALSE;
-		Configure.ExName = Name_JSD;
-		Configure.Password = 633817;
-		
-	#endif
+		Configure.Battery_SW = FALSE;	
 }
 
 
@@ -389,7 +314,7 @@ void	Configure_InstrumentType( void )
 	{
 		if( vbYes == MsgBox( "保存配置?",vbYesNo ) )
 		{
-			ConfigureLoadDefault( );
+// 			ConfigureLoadDefault( );
 			ConfigureSave();
 		}
 		else
@@ -411,13 +336,22 @@ void	Configure_InstrumentType( void )
 
 void	ConfigureLoadDefault( void )
 {
-	ConfigureLoad_KB6120A();
-
-	ConfigureLoad_KB6120AD();
-
-	ConfigureLoad_KB6120AD2();
-
-	ConfigureLoad_KB2400HL();
-
+	#ifdef	T_KB6120A
+		ConfigureLoad_KB6120A();
+	#elif	defined	T_KB6120AD
+		ConfigureLoad_KB6120AD();
+	#elif	defined	T_KB6120AD2
+		ConfigureLoad_KB6120AD2();
+	#elif	defined	T_KB2400HL
+		ConfigureLoad_KB2400HL();
+	#endif	
+	if ( Configure.DataValidMask != eDataValidMask )
+	{
+		ConfigureLoadDefault_KB6120E();
+		Configure.DataValidMask = eDataValidMask;
+	}
 }
+
 /********  (C) COPYRIGHT 2014 青岛金仕达电子科技有限公司  **** End Of File ****/
+
+

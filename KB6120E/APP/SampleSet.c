@@ -143,16 +143,16 @@ void	SetupFlow_SHI( void )
 				case enumOrifice_1:
           if ( cflow <  1u ) { cflow =  1u; }
           if ( cflow > 10u ) { cflow = 10u; }
-					changed = TRUE;
 					break;
 				case enumOrifice_2:
 					if ( cflow <  5u ) { cflow =  5u; }
 					if ( cflow > 20u ) { cflow = 20u; }
-					changed = TRUE;
+
 					break;
 				default:
 					break;
 				}
+				changed = TRUE;
 			}
 			break;
 		case 2:
@@ -162,17 +162,16 @@ void	SetupFlow_SHI( void )
 				{
 				case enumOrifice_1:
 					if ( dflow <  1u ) { dflow =  1u; }
-					if ( dflow > 10u ) { dflow = 10u; }
-					changed = TRUE;
+					if ( dflow > 10u ) { dflow = 10u; }					
 					break;
 				case enumOrifice_2:
 					if ( dflow <  5u ) { dflow =  5u; }
 					if ( dflow > 20u ) { dflow = 20u; }
-					changed = TRUE;
 					break;
 				default:
 					break;
 				}
+				changed = TRUE;
 			}
 			break;
 		default:

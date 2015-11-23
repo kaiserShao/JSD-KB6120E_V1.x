@@ -65,58 +65,50 @@ static	void	TaskCreate_Sampler( enum enumSamplerSelect SamplerSelect )
 *******************************************************************************/
 void Sampler_R( enum enumSamplerSelect	SamplerSelect )
 {
-	const static struct uMenu menu_TSP[] =
+	static struct uMenu menu_TSP[] =
 	{
 		{ 0x0102u, " 恢复粉尘采样?" },
 		{ 0x0402u, "是" }, { 0x0409u, "否" },
  	};
-	const  static	struct uMenu menu_R24[] =
+	static	struct uMenu menu_R24[] =
 	{
 		{ 0x0102u, " 恢复日均采样?" },
 		{ 0x0402u, "是" }, { 0x0409u, "否" },
  	};
-	const  static	struct uMenu menu_SHI[] =
+	static	struct uMenu menu_SHI[] =
 	{
 		{ 0x0102u, " 恢复时均采样?" },
 		{ 0x0402u, "是" }, { 0x0409u, "否" },
  	};
-	const  static	struct uMenu menu_AIR[] =
+	static	struct uMenu menu_AIR[] =
 	{
 		{ 0x0102u, " 恢复大气采样?" },
 		{ 0x0402u, "是" }, { 0x0409u, "否" },
  	};
+	static	struct	uMenu	* menux[SamplerNum_Max] =
+	{
+		menu_TSP,
+		menu_R24,
+		menu_SHI,
+		menu_AIR,
+	};
 	uint8_t item = 1u; 
-
 	cls();
 	TaskCreate_Sampler( SamplerSelect );
-	if( SamplerSelect == Q_TSP )
-		Menu_Redraw( menu_TSP );
-	if( SamplerSelect == Q_R24 ) 
- 		Menu_Redraw( menu_R24 );	
-	if( SamplerSelect == Q_SHI )
-		Menu_Redraw( menu_SHI );
-	if( SamplerSelect == Q_AIR )
-		Menu_Redraw( menu_AIR );
+	Menu_Redraw( menux[SamplerSelect] );	
 	do {
-		if( SamplerSelect == Q_TSP )
-			item = Menu_Select3( menu_TSP, item, 10 );
-		if( SamplerSelect == Q_R24 ) 
-			item = Menu_Select3( menu_R24, item, 10 );	
-		if( SamplerSelect == Q_SHI )
-			item = Menu_Select3( menu_SHI, item, 10 );
-		if( SamplerSelect == Q_AIR )
-			item = Menu_Select3( menu_AIR, item, 10 );		
+		item = Menu_Select3( menux[SamplerSelect], item, 10 );		
 		switch ( item )
 		{
 		case 1:			
 			item = enumSelectESC; 
 			break;
 		default:
-			SampleSwitch[ SamplerSelect].Clean = TRUE;
+			SampleSwitch[SamplerSelect].Clean = TRUE;
 			item = enumSelectESC;
 			break;
 		}
-	} while ( enumSelectESC != item );
+	} while( enumSelectESC != item );
 	
 }
  
@@ -129,10 +121,12 @@ void	Sampler_BootResume( void )
 	if( Configure.PumpType[PP_TSP] ==  enumOrifice_1 )
 		if ( SampleSet[Q_TSP].start != 0 )
 		   Sampler_R( Q_TSP );
-	if( ( Configure.PumpType[PP_R24_A] ==  enumOrifice_1 ) && ( Configure.PumpType[PP_R24_B] ==  enumOrifice_1 ))	
+	if( ( Configure.PumpType[PP_R24_A] ==  enumOrifice_1 )
+	 && ( Configure.PumpType[PP_R24_B] ==  enumOrifice_1 ) )	
 		if ( SampleSet[Q_R24].start != 0 )
 			Sampler_R( Q_R24 );
-	if( ( Configure.PumpType[PP_SHI_C] ==  enumOrifice_1 ) && ( Configure.PumpType[PP_SHI_D] ==  enumOrifice_1 ) )
+	if( ( Configure.PumpType[PP_SHI_C] ==  enumOrifice_1 )
+	 && ( Configure.PumpType[PP_SHI_D] ==  enumOrifice_1 ) )
 		if ( SampleSet[Q_SHI].start != 0 )
 			Sampler_R( Q_SHI );
 	if( Configure.PumpType[PP_AIR] ==  enumOrifice_1 )	

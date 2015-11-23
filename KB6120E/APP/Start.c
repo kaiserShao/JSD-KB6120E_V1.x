@@ -25,7 +25,7 @@ extern	void	show_battery( uint16_t yx );
 /********************************** 功能说明 ***********************************
 *  显示时间
 *******************************************************************************/
-static	void	show_std_clock( void )
+void	show_std_clock( void )
 {
 	uint32_t	now = get_Now();
 
@@ -57,7 +57,7 @@ void	menu_Main( void )
 		Menu_Redraw( menu );
 		SamplerTypeShow( 0x000Au );
 
-		item = Menu_Select_Ex( menu, item, show_std_clock );
+		item = Menu_SelectOnly( menu, item, FALSE, show_std_clock );
 		
 		switch( item )
 		{
@@ -164,7 +164,8 @@ __task	int32_t	main( void )
 	BIOS_Init();
 	beep();
 	RTOS_Init();		  //	尽早执行
-	
+		
+	EditionSelsct();
 	ConfigureLoad();	//	先确定仪器型号
 	CalibrateLoad();	//	读传感器前执行,	远程存储器中的参数，应等通讯初始化后再读。
 	SampleSetLoad();	//	恢复采样前执行

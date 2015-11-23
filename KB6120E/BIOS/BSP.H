@@ -91,10 +91,13 @@ typedef	uint8_t	uKey;
 #define	K_LEFT	_Key6
 #define	K_DOWN	_Key7
 
-#define	K_OK_UP 	 ( _Key1 | _Key5 )
-#define	K_OK_DOWN  ( _Key1 | _Key7 )
-#define	K_OK_LEFT	 ( _Key1 | _Key6 )
-#define	K_OK_RIGHT ( _Key1 | _Key4 )
+#define	K_OK_UP 		( K_OK | K_UP )
+#define	K_OK_DOWN 	( K_OK | K_DOWN )
+#define	K_OK_LEFT		( K_OK | K_LEFT )
+#define	K_OK_RIGHT	( K_OK | K_RIGHT )
+
+#define	K_ESC_SHIFT ( K_ESC | K_SHIFT )
+
 //	Keyboard.C
 extern	void	Keyboard_Init( void );
 

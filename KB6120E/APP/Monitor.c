@@ -546,7 +546,29 @@ void	disposeKey( const enum enumSamplerSelect SamplerSelect, uint8_t * pOption, 
 		}
 	}
 }
+void	State_Finish( enum enumSamplerSelect SamplerSelect )
+{
+	cls();
+	SamplerTypeShow( 0x0102u );
 
+	switch( SamplerSelect )
+	{
+	case	Q_TSP: Lputs( 0x0004, " TSP采样");	break;
+	case	Q_R24: Lputs( 0x0004, "日均采样");	break;
+	case	Q_SHI: Lputs( 0x0004, "时均采样");	break;
+	case	Q_AIR: Lputs( 0x0004, "大气采样");	break;
+	}
+	Lputs( 0x0203,	"采样完成!");
+	Lputs( 0x0401,  "查询采样结果?");
+	do
+	{
+		show_std_clock();
+	}while( !hitKey( 50 ) );
+
+	if( K_OK == getKey() )
+		menu_SampleQuery();
+
+}
 void	monitor_TSP( void )
 {
 	enum
@@ -584,6 +606,7 @@ void	monitor_TSP( void )
 		
 		disposeKey( SamplerSelect, &option, opt_max, NULL );
 	}
+	State_Finish( SamplerSelect );
 }
 
 static	void	monitor_R24 ( void )
@@ -632,6 +655,7 @@ static	void	monitor_R24 ( void )
 
 		disposeKey( SamplerSelect, &option, opt_max, &PumpSelect );
 	}
+	State_Finish( SamplerSelect );
 }
 
 static	void	monitor_SHI ( void )
@@ -677,6 +701,7 @@ static	void	monitor_SHI ( void )
 
 		disposeKey( SamplerSelect, &option, opt_max, &PumpSelect );
 	}
+	State_Finish( SamplerSelect );
 }
 
 static	void	monitor_AIR ( void )
@@ -714,6 +739,7 @@ static	void	monitor_AIR ( void )
 
 		disposeKey( SamplerSelect, &option, opt_max, NULL );
 	}
+	State_Finish( SamplerSelect );
 }
 
 /********************************** 功能说明 ***********************************

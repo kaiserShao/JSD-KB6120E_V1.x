@@ -467,9 +467,9 @@
               <FilePath>..\SD_USB\SPI_HW.C</FilePath>
             </File>
             <File>
-              <FileName>SPI3Init.c</FileName>
+              <FileName>SPI1Init.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\SD_USB\SPI3Init.c</FilePath>
+              <FilePath>..\SD_USB\SPI1Init.c</FilePath>
             </File>
           </Files>
         </Group>

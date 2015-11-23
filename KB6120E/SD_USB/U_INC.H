@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "file_sys.h"
-#include "SPI3Init.h"
+#include "SPI1Init.h"
 #include "CH376INC.h"
 #include "SD_USBPort.h"
 #include "bkpdata.h"
