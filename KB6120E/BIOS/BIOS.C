@@ -171,7 +171,7 @@ uint8_t	OLED9704_ReadState( void  )
 
 uint8_t	OLED9704_ReadData( void )
 {
-    uint8_t InData;
+  uint8_t InData;
 
 	P8P_ModeInput();
 	Pin_OLED9704_DC = 1;
@@ -185,8 +185,8 @@ uint8_t	OLED9704_ReadData( void )
 	delay_us( 1 );	InData = P8P_PortRead();
 	Pin_OLED9704_RD = 1;
 	Pin_OLED9704_CS = 1;
-
-    return InData;
+	
+  return InData;
 }
 
 void  OLED9704_WriteData( uint8_t OutData )

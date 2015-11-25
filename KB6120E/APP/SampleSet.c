@@ -478,7 +478,7 @@ void	menu_SampleSetup( void )
 		}
 	} while( ! done );
 }
-
+BOOL	SampleFinishFState[SamplerNum_Max];
 /********************************** 功能说明 ***********************************
 *  设置启动采样的控制参数，原则上每次采样前需要重新设置的参数，并启动采样
 *******************************************************************************/
@@ -618,12 +618,48 @@ static	BOOL	SampleStart( enum enumSamplerSelect SamplerSelect )
 		case enumSelectXCH:
 			SamplerTypeSwitch();
 			return	FALSE;
+		case	enumSelectESC:
+			{
+				uint8_t i;
+				for( i = 0; i < SamplerNum_Max; i++)
+					SampleFinishFState[i] = FALSE;		
+			}
+			break;
 		}
 	} while ( enumSelectESC != item );
 	
 	return	TRUE;	//	返回，显示上级菜单
 }
 
+void	State_Finish( enum enumSamplerSelect SamplerSelect )
+{
+	
+	if( (	Q_Sampler[SamplerSelect].state	== state_FINISH ) && SampleFinishFState[SamplerSelect] )
+	{
+		cls();
+		SampleFinishFState[SamplerSelect] = FALSE;
+		switch( SamplerSelect )
+		{
+		case	Q_TSP: Lputs( 0x0004, " TSP采样");	break;
+		case	Q_R24: Lputs( 0x0004, "日均采样");	break;
+		case	Q_SHI: Lputs( 0x0004, "时均采样");	break;
+		case	Q_AIR: Lputs( 0x0004, "大气采样");	break;
+		}
+		Lputs( 0x0203,	"采样完成!");
+		Lputs( 0x0401,  "查询采样结果?");
+		do
+		{
+			show_std_clock();
+		}while( !hitKey( 50 ) );
+
+		switch( getKey() )
+		{
+		case K_OK:	menu_SampleQuery();	break;
+		default:	break;
+		}
+	}		
+
+}
 /********************************** 功能说明 ***********************************
 *  主菜单访问设置程序的接口
 *******************************************************************************/
@@ -633,6 +669,7 @@ void	menu_SampleStart( void )
 	
 	do {
 		monitor();
+		State_Finish(	SamplerSelect );
 		done = SampleStart( SamplerSelect );
 	} while ( ! done );
 }

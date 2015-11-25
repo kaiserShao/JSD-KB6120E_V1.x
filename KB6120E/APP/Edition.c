@@ -91,9 +91,9 @@ void	ShowEdition_Inner( void )
 {	
 	cls();
 	Lputs( 0x0000u, szNameIdent[Configure.InstrumentName] );
-	Lputs( 0x0200u, __DATE__ );
-	Lputs( 0x0400u, __TIME__ );
- 	Lputs( 0x0600u, EditionNum[0] );	
+	Lputs( 0x0202u, __DATE__ );
+	Lputs( 0x0402u, __TIME__ );
+ 	Lputs( 0x0602u, EditionNum[0] );	
 	getKey();
 }
 

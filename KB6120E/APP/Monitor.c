@@ -194,10 +194,10 @@ static	void	ShowTimeState ( enum enumSamplerSelect SamplerSelect, enum enumPumpS
 	switch ( p->state )
 	{
 	default:
-	case state_ERROR:		Lputs ( 0x0200u, "    !!故障!!    " );	break;
-	case state_FINISH:		Lputs ( 0x0200u, "    完成采样    " );	break;
-	case state_SAMPLE:		Lputs ( 0x0200u, "    正在采样    " );	break;
-	case state_SUSPEND:		Lputs ( 0x0200u, "    等待采样    " );	break;
+	case state_ERROR:		Lputs ( 0x0200u, "    !!故障!!    " );break;
+	case state_FINISH:	Lputs ( 0x0200u, "    完成采样    " );	break;
+	case state_SAMPLE:	Lputs ( 0x0200u, "    正在采样    " );	break;
+	case state_SUSPEND:	Lputs ( 0x0200u, "    等待采样    " );	break;
 	case state_PAUSE:		Lputs ( 0x0200u, "    暂停采样    " );	break;
 	}
 	//TODO:	2路同开不同关的时间不一样！！！
@@ -230,7 +230,7 @@ static	void	ShowPumpRunFlow( enum enumPumpSelect PumpSelect )
 	if ( ! Q_Pump[PumpSelect].xp_state )
 	{
 		Lputs( 0x0200u, "                " );
-		Lputs( 0x0400u, "泵已关闭        " );
+		Lputs( 0x0400u, "    泵已关闭    " );
 		Lputs( 0x0600u, "                " );
 		return;
 	}
@@ -343,35 +343,34 @@ static	void	ShowHCBox( void )
 ******************************************/
 void Samplestate_Select( BOOL state )
 {
-	static	struct  uMenu  const  menu[] =
+	static	struct  uMenu	menu1[] =
     {
         { 0x0103u, "设置采样状态" },
         { 0x0300u, "暂停" },{ 0x0305u, "停止" },{ 0x030au, "取消" }
 		
     };
-	static	struct  uMenu  const  menu2[] =
+	static	struct  uMenu	menu2[] =
     {
         { 0x0103u, "设置采样状态" },
         { 0x0300u, "恢复" },{ 0x0305u, "停止" },{ 0x030au, "取消" }
 		
     };
+	static	struct  uMenu  * menu[2] =
+	{
+		menu1,
+		menu2,
+	};
     uint8_t	item = 0u;
     BOOL	need_redraw = TRUE;
     do
     {   
-        if ( need_redraw )
-        {
-			cls();
-			if( state ==TRUE)
-				Menu_Redraw( menu2 );
-			else
-				Menu_Redraw( menu );
-			need_redraw = FALSE;
-        }
-		if( state == TRUE )
-			item = Menu_Select2( menu2, item + 1u, TRUE );
-		else
-			item = Menu_Select2( menu, item + 1u, TRUE );
+			if ( need_redraw )
+			{
+				cls();
+				Menu_Redraw( menu[state] );
+				need_redraw = FALSE;
+			}
+			item = Menu_Select2( menu[state], item + 1u, TRUE );
       switch( item )
       {
       case 1:
@@ -716,38 +715,12 @@ static	void	monitor_AIR ( void )
 	}
 }
 
-void	State_Finish( enum enumSamplerSelect SamplerSelect )
-{
-	cls();
-// 	SamplerTypeShow( 0x0102u );
-
-	switch( SamplerSelect )
-	{
-	case	Q_TSP: Lputs( 0x0004, " TSP采样");	break;
-	case	Q_R24: Lputs( 0x0004, "日均采样");	break;
-	case	Q_SHI: Lputs( 0x0004, "时均采样");	break;
-	case	Q_AIR: Lputs( 0x0004, "大气采样");	break;
-	}
-	Lputs( 0x0203,	"采样完成!");
-	Lputs( 0x0401,  "查询采样结果?");
-	do
-	{
-		show_std_clock();
-	}while( !hitKey( 50 ) );
-
-	switch( getKey() )
-	{
-	case K_OK:	menu_SampleQuery();	break;
-	default:	break;
-	}
-
-}
 /********************************** 功能说明 ***********************************
 *  采样过程中显示各种状态
 *******************************************************************************/
 void	monitor ( void )
 {
-	static BOOL SampleFinishFState[SamplerNum_Max];
+
 	while ( Sampler_isRunning( SamplerSelect ) )
 	{
 		cls();
@@ -762,12 +735,7 @@ void	monitor ( void )
 		}
 	
 	}
-	
-	if( (	Q_Sampler[SamplerSelect].state	== state_FINISH ) && SampleFinishFState[SamplerSelect] )
-	{
-		SampleFinishFState[SamplerSelect] = FALSE;
-		State_Finish( SamplerSelect );
-	}		
+
 }
 
 /********************************** 功能说明 ***********************************
@@ -807,71 +775,71 @@ void	SamplerTypeSwitch( void )
 	default:	break;
 	}
 }
-void	DisplaySetContrast( uint8_t SetContrast );
+// void	DisplaySetContrast( uint8_t SetContrast );
 
 /********************************** 功能说明 ***********************************
 *  设置显示屏参数（有可能在看不到显示的情况下进入）
 *******************************************************************************/
-void	ModifyLCD( void )
-{
-	uint16_t gray  = Configure.DisplayGray;
+// void	ModifyLCD( void )
+// {
+// 	uint16_t gray  = Configure.DisplayGray;
 
-	BOOL	changed = false;
-	
-	cls();
-	Lputs( 0x0000u, "配置 液晶 灰度" );
-	Lputs( 0x0600u, "用方向键调整电压" );
-	for(;;)
-	{
-		DisplaySetGrayVolt( gray * 0.01f );
+// 	BOOL	changed = false;
+// 	
+// 	cls();
+// 	Lputs( 0x0000u, "配置 液晶 灰度" );
+// 	Lputs( 0x0600u, "用方向键调整电压" );
+// 	for(;;)
+// 	{
+// 		DisplaySetGrayVolt( gray * 0.01f );
 
-		Lputs( 0x0300u, "灰度" );	ShowI16U( 0x0305u, gray,  0x0502u, " V " );
+// 		Lputs( 0x0300u, "灰度" );	ShowI16U( 0x0305u, gray,  0x0502u, " V " );
 
 
-		switch( getKey())
-		{
-		case K_UP:	
-			if ( gray < 2000u )
-			{
-				++gray;
-			}
-			changed = true;
-			break;
-		case K_DOWN:
-			if ( gray >  200u )
-			{
-				--gray;
-			}
-			changed = true;
-			break;
+// 		switch( getKey())
+// 		{
+// 		case K_UP:	
+// 			if ( gray < 2000u )
+// 			{
+// 				++gray;
+// 			}
+// 			changed = true;
+// 			break;
+// 		case K_DOWN:
+// 			if ( gray >  200u )
+// 			{
+// 				--gray;
+// 			}
+// 			changed = true;
+// 			break;
 
-		case K_RIGHT:
-			if ( gray < ( 2000u - 50u ))
-			{ 
-				gray += 50u;
-			}
-			changed = true;
-			break;
-		case K_LEFT:	
-			if ( gray > ( 200 + 20u ))
-			{
-				gray -= 20u;
-			}
-			changed = true;
-			break;
+// 		case K_RIGHT:
+// 			if ( gray < ( 2000u - 50u ))
+// 			{ 
+// 				gray += 50u;
+// 			}
+// 			changed = true;
+// 			break;
+// 		case K_LEFT:	
+// 			if ( gray > ( 200 + 20u ))
+// 			{
+// 				gray -= 20u;
+// 			}
+// 			changed = true;
+// 			break;
 
-		case K_ESC:
-		case K_OK:
-			if ( changed )
-			{
-				Configure.DisplayGray  = gray;
-				ConfigureSave();
-			}
-			return;
-		
-		}
-	}
-}
+// 		case K_ESC:
+// 		case K_OK:
+// 			if ( changed )
+// 			{
+// 				Configure.DisplayGray  = gray;
+// 				ConfigureSave();
+// 			}
+// 			return;
+// 		
+// 		}
+// 	}
+// }
 
 void	menu_show_env_state( void )
 {
@@ -886,34 +854,34 @@ void	menu_show_env_state( void )
 		while( !hitKey( 10 ) )
 			show_env_state();
 
-		if ( ! releaseKey( K_OK, 300 ))
-		{
-			cls();
-			getKey();
-			beep();
-			delay( 100u );
-			beep();
-			ModifyLCD();
-			Done = TRUE; 
-		}
-		else
-		if ( ! releaseKey( K_SHIFT, 300 ))
-		{
-			cls();
-			getKey();
-			beep();
-			delay( 100u );
-			beep();
-			Lputs( 0x0201u, "请输入出厂编号:" );
-			ConfigureLoad();
-			if( EditI32U( 0x0505u, &Configure.ExNum, 0x0700u ))
-				if( vbYes == MsgBox("是否保存编号?",vbYesNo) )
-					ConfigureSave();
-				else
-					ConfigureLoad();				
-			Done = TRUE; 
-		}
-		else
+// 		if ( ! releaseKey( K_OK, 300 ))
+// 		{
+// 			cls();
+// 			getKey();
+// 			beep();
+// 			delay( 100u );
+// 			beep();
+// 			ModifyLCD();
+// 			Done = TRUE; 
+// 		}
+// 		else
+// 		if ( ! releaseKey( K_SHIFT, 300 ))
+// 		{
+// 			cls();
+// 			getKey();
+// 			beep();
+// 			delay( 100u );
+// 			beep();
+// 			Lputs( 0x0201u, "请输入出厂编号:" );
+// 			ConfigureLoad();
+// 			if( EditI32U( 0x0505u, &Configure.ExNum, 0x0700u ))
+// 				if( vbYes == MsgBox("是否保存编号?",vbYesNo) )
+// 					ConfigureSave();
+// 				else
+// 					ConfigureLoad();				
+// 			Done = TRUE; 
+// 		}
+// 		else
 		{
 			switch( getKey() )
 			{

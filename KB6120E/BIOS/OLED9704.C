@@ -31,7 +31,7 @@ extern	void	  OLED9704_DisplayDisable( void );
 ///////////////////////////////////////////////////////////////////
 // 根据设定的坐标数据，定位下一个操作单元位置
 ///////////////////////////////////////////////////////////////////
-static  void  moveto( uint8_t yy, uint16_t xx )
+static  void  move_to( uint8_t yy, uint16_t xx )
 {
 	xx += 0x02U;					
 	OLED9704_WriteReg( 0xB0U + ( yy % 0x08U ));			// Set page
@@ -46,32 +46,16 @@ void  OLED9704_cls( void  )
 {	// 清屏
 	uint8_t	row, col;
 
-	OLED9704_WriteReg(0xAEU);   		// Display off
-	OLED9704_WriteReg(0xADU);  OLED9704_WriteReg(0x8AU);    // Internal DC-DC off: Second byte
-	OLED9704_WriteReg(0xA8U);  OLED9704_WriteReg(0x3FU);    // MUX Ratio: 64 duty
-	OLED9704_WriteReg(0xD3U);  OLED9704_WriteReg(0x00U);    // Display offset: Second byte
-	OLED9704_WriteReg(0x40U);   		// Start line
-	OLED9704_WriteReg(0xA0U);   		// Set Segment remap (0xA0:normal, 0xA1:remapped)
-	OLED9704_WriteReg(0xC8U);   		// Set COM remap (0xC0:normal, 0xC8: enable )
-	OLED9704_WriteReg(0xA6U);   		// Set normal/inverse display (0xA6:Normal display)
-	OLED9704_WriteReg(0xA4U);   		// Set entire display on/off (0xA4:Normal display)
-//    OLED9704_WriteReg(0x81U);  OLED9704_WriteReg(0x5CU);    // Contrast setting: Second byte
-	OLED9704_WriteReg(0xD5U);  OLED9704_WriteReg(0x60U);    // Frame rate: 85 Hz
-	OLED9704_WriteReg(0xD8U);  OLED9704_WriteReg(0x00U);    // Mode setting: Mono mode
-	OLED9704_WriteReg(0xD9U);  OLED9704_WriteReg(0x84U);    // Set Pre-char_tge period: Second byte
-
 	for( row = 0U; row < 8u; ++row )
 	{
-		moveto( row, 0U  );
+		move_to( row, 0U  );
 		for( col = 128U; col != 0U; --col )
 		{
-			OLED9704_WriteData( 0x00u );
+			OLED9704_WriteData( 0xffu );
 		}
 	}
 
 	OLED9704_WriteReg(0xAFU);   		// Display on
-	
-//  OLED9704_WriteReg(0x81U);  OLED9704_WriteReg(0x80U);    // Contrast setting: Second byte
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -98,10 +82,10 @@ void	OLED9704_mask( uint16_t yx, uint8_t xlen )
 	do {   
 		for( i = 0u; i < 8u; ++i )
 		{
-			moveto( row,      (uint8_t)( col * text_width ) + i );	InData = OLED9704_ReadData();
-			moveto( row,      (uint8_t)( col * text_width ) + i );	OLED9704_WriteData((uint8_t)(~InData));
-			moveto( row + 1U, (uint8_t)( col * text_width ) + i );	InData = OLED9704_ReadData();
-			moveto( row + 1U, (uint8_t)( col * text_width ) + i );	OLED9704_WriteData((uint8_t)(~InData));
+			move_to( row,      (uint8_t)( col * text_width ) + i );	InData = OLED9704_ReadData();
+			move_to( row,      (uint8_t)( col * text_width ) + i );	OLED9704_WriteData((uint8_t)(~InData));
+			move_to( row + 1U, (uint8_t)( col * text_width ) + i );	InData = OLED9704_ReadData();
+			move_to( row + 1U, (uint8_t)( col * text_width ) + i );	OLED9704_WriteData((uint8_t)(~InData));
 		}
 	} while ( ++col < col_end );
 }
@@ -148,18 +132,18 @@ void	OLED9704_puts( uint16_t yx, const CHAR * sz )
 		if ( 0U == ((uint8_t)sDat & 0x80U ))
 		{	// DBC 半角字
 			pDot = DotSeekDBC( sDat );
-			moveto( row, (uint8_t)( col * text_width ) );
+			move_to( row, (uint8_t)( col * text_width ) );
 			for( i = 8U; i != 0U; --i )	{	OLED9704_WriteData(*pDot++);	}
-			moveto( row + 1U, (uint8_t)( col * text_width ) );
+			move_to( row + 1U, (uint8_t)( col * text_width ) );
 			for( i = 8U; i != 0U; --i )	{	OLED9704_WriteData(*pDot++);	}
 			col += 1U;
 		}
 		else
 		{	// SBC 全角字
 			pDot = DotSeekSBC( sDat, *sz++ );
-			moveto( row, (uint8_t)( col * text_width ) );
+			move_to( row, (uint8_t)( col * text_width ) );
 			for( i = 16U; i != 0U; --i ) {	OLED9704_WriteData(*pDot++);	}
-			moveto( row + 1U, (uint8_t)( col * text_width ) );
+			move_to( row + 1U, (uint8_t)( col * text_width ) );
 			for( i = 16U; i != 0U; --i ) {	OLED9704_WriteData(*pDot++);	}
 			col += 2U;
 		}
@@ -184,7 +168,20 @@ void	OLED9704_Init( void )
 {
 	//  显示模块初始化
 	OLED9704_PortInit();
-
+	OLED9704_WriteReg(0xAEU);   		// Display off
+	OLED9704_WriteReg(0xADU);  OLED9704_WriteReg(0x8AU);    // Internal DC-DC off: Second byte
+	OLED9704_WriteReg(0xA8U);  OLED9704_WriteReg(0x3FU);    // MUX Ratio: 64 duty
+	OLED9704_WriteReg(0xD3U);  OLED9704_WriteReg(0x00U);    // Display offset: Second byte
+	OLED9704_WriteReg(0x40U);   		// Start line
+//	OLED9704_WriteReg(0xA0U);   		// Set Segment remap (0xA0:normal, 0xA1:remapped)//清达光电需要改的地方a0.正常	a1.反显
+	OLED9704_WriteReg(0xA1U);
+	OLED9704_WriteReg(0xC8U);   		// Set COM remap (0xC0:normal, 0xC8: enable )
+	OLED9704_WriteReg(0xA6U);   		// Set normal/inverse display (0xA6:Normal display)
+	OLED9704_WriteReg(0xA4U);   		// Set entire display on/off (0xA4:Normal display)
+//    OLED9704_WriteReg(0x81U);  OLED9704_WriteReg(0x5CU);    // Contrast setting: Second byte
+	OLED9704_WriteReg(0xD5U);  OLED9704_WriteReg(0x60U);    // Frame rate: 85 Hz
+	OLED9704_WriteReg(0xD8U);  OLED9704_WriteReg(0x00U);    // Mode setting: Mono mode
+	OLED9704_WriteReg(0xD9U);  OLED9704_WriteReg(0x84U);    // Set Pre-char_tge period: Second byte
 	OLED9704_cls();
 
 	OLED9704_DisplayEnable();

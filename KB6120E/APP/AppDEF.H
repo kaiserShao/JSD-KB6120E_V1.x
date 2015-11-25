@@ -276,6 +276,8 @@ extern	uint32_t	eDataValidMask;
 extern	void	EditionSelsct( void );
 extern	void	show_std_clock( void );
 
+//	SampleSet.c
+extern	BOOL SampleFinishFState[SamplerNum_Max];
 #include "SENSOR.H"
 #include "EEPROM.H"
 
